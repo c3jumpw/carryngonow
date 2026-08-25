@@ -59,18 +59,36 @@ carry-n-go-wholesale/
 
 The visual concept is a "packing ledger" — Carry n Go's whole promise is
 getting familiar ingredients to your door, so the form borrows the
-vocabulary of shipping labels, market receipts, and packing lists:
+vocabulary of shipping labels, market receipts, and packing lists, built
+in the brand's own real colors and fonts:
 
-- A torn paper-tape stripe across the top of the page.
+- The real Carry n Go logo (`assets/logo.png`, extracted from the site's
+  AVIF asset with transparency preserved) sits in the header.
+- Palette pulled directly from the logo: brand green, near-black ink, and
+  a warm cream background — red is reserved only for validation errors.
+- A motion-line stripe across the top of the page, echoing the speed
+  lines behind the scooter in the logo.
 - Step tabs styled like ledger tabs, with SKUs shown in monospace like
   price tags throughout.
 - The Step 4 review renders as a running receipt with a dashed
   ledger-line background.
-- Palette drawn from the goods themselves rather than a generic
-  food-site look: palm-oil rust, garri cream, forest green, warm gold.
-- Type pairing: **Fraunces** for headings (warm, a little hand-set),
-  **Work Sans** for body copy, **IBM Plex Mono** for SKUs and receipt-style
-  data.
+- Type pairing: **Archivo Narrow** for headings and step labels (the same
+  condensed style as the logo's wordmark), **Archivo** for body copy,
+  **IBM Plex Mono** for SKUs and receipt-style data.
+- A soft, direction-aware crossfade/slide transition between steps —
+  Continue glides in from the right, Back glides in from the left — fully
+  disabled for anyone with `prefers-reduced-motion` set.
+
+## Mobile & responsive behavior
+
+- Fluid type and spacing via `clamp()` throughout, not fixed breakpoint
+  jumps.
+- Below 640px: header simplifies (logo only), step tabs shrink, quantity
+  rows and nav buttons stack full-width, and the review receipt's rows
+  stack label-over-value instead of squeezing onto one line.
+- All inputs are 16px font size to prevent iOS Safari's auto-zoom on
+  focus, and all buttons keep a 44px minimum touch target.
+- Tested down to a 360px-wide viewport.
 
 ## Editing the inventory
 

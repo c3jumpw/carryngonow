@@ -1,34 +1,37 @@
 /* ==========================================================================
    CARRY N GO — WHOLESALE INQUIRY
-   Design concept: a "packing ledger." Carry n Go's whole promise is getting
-   familiar ingredients to your door — so the form borrows the vocabulary of
-   shipping labels, market receipts, and packing lists: a torn paper-tape
-   header, ledger-style step tabs, monospaced SKU tags, and a running
-   "receipt" that tallies what's been picked. Palette is pulled from the
-   goods themselves — palm oil red, garri cream, bean brown, leaf green —
-   rather than a generic food-site look.
+   Design concept: a "packing ledger" crossed with the brand's own energy.
+   Carry n Go's logo is a bold, condensed, bright-green wordmark with a
+   scooter mid-delivery and motion lines — fast, friendly, in motion. The
+   form keeps the ledger/receipt structure (step tabs, monospaced SKU tags,
+   a running "receipt" review) but is built in the brand's own green/black/
+   white, set in the same condensed Archivo Narrow the logo's wordmark uses.
    ========================================================================== */
 
 :root {
-  --cream:        #FAF6EC;
-  --cream-deep:   #F2ECDC;
-  --forest:       #1F4D3A;
-  --forest-dark:  #14332A;
-  --rust:         #BE4A28;
-  --rust-dark:    #A03E20;
-  --gold:         #D6A13C;
-  --ink:          #2B2118;
-  --ink-soft:     #5B5142;
-  --line:         #D9CFB8;
+  --cream:        #FAFAF7;
+  --cream-deep:   #EEF4EC;
+  --green:        #2FA836;
+  --green-dark:   #1E7A26;
+  --green-deep:   #12441A;
+  --green-light:  #B7E8AF;
+  --ink:          #16191A;
+  --ink-soft:     #565F5B;
+  --line:         #DDE3DA;
   --white:        #FFFFFF;
+  --red:          #D14A2D;
+  --red-dark:     #B03A21;
 
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-body:    'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Archivo Narrow', 'Arial Narrow', sans-serif;
+  --font-body:    'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
 
   --radius-sm: 6px;
   --radius-md: 10px;
-  --shadow-card: 0 1px 2px rgba(43, 33, 24, 0.06), 0 6px 16px rgba(43, 33, 24, 0.05);
+  --shadow-card: 0 1px 2px rgba(22, 25, 26, 0.06), 0 6px 16px rgba(22, 25, 26, 0.06);
+
+  --ease-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --step-duration: 380ms;
 }
 
 * { box-sizing: border-box; }
@@ -52,17 +55,21 @@ body {
   font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* Torn-tape accent strip along the very top of the page */
+/* Motion-line accent strip along the very top of the page — echoes the
+   speed lines behind the scooter in the logo. */
 .tape {
-  height: 10px;
+  height: 8px;
   width: 100%;
   background: repeating-linear-gradient(
     -45deg,
-    var(--rust) 0px, var(--rust) 10px,
-    var(--gold) 10px, var(--gold) 20px
+    var(--green) 0px, var(--green) 14px,
+    var(--ink) 14px, var(--ink) 16px,
+    var(--cream) 16px, var(--cream) 20px
   );
+  flex-shrink: 0;
 }
 
 a { color: inherit; }
@@ -73,80 +80,71 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 22px clamp(20px, 5vw, 64px);
+  gap: 16px;
+  padding: 16px clamp(16px, 5vw, 64px);
   border-bottom: 1px solid var(--line);
-  background: var(--cream);
+  background: var(--white);
+  flex-wrap: wrap;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   text-decoration: none;
   color: var(--ink);
+  min-width: 0;
 }
 
-.brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--forest);
-  color: var(--cream);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  font-weight: 500;
+.brand-logo {
+  height: 42px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
 }
-
-.brand-name {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 500;
-}
-.brand-name em { color: var(--rust); font-style: normal; }
 
 .header-link {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--ink-soft);
   text-decoration: none;
   border-bottom: 1px dotted var(--ink-soft);
+  white-space: nowrap;
 }
-.header-link:hover { color: var(--rust); border-color: var(--rust); }
+.header-link:hover { color: var(--green-dark); border-color: var(--green-dark); }
 
 /* ---------------------------------- layout ------------------------------ */
 
 .wrap {
   max-width: 780px;
   margin: 0 auto;
-  padding: clamp(32px, 6vw, 56px) clamp(20px, 5vw, 24px) 96px;
+  padding: clamp(28px, 6vw, 56px) clamp(16px, 5vw, 24px) 80px;
 }
 
-.intro { margin-bottom: 40px; }
+.intro { margin-bottom: 36px; }
 
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--rust);
+  color: var(--green-dark);
   margin: 0 0 10px;
 }
 
 .intro h1 {
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(30px, 5vw, 42px);
-  line-height: 1.12;
+  font-weight: 600;
+  font-stretch: condensed;
+  font-size: clamp(28px, 6.5vw, 44px);
+  line-height: 1.1;
   margin: 0 0 14px;
-  color: var(--forest-dark);
+  color: var(--green-deep);
+  letter-spacing: 0.002em;
 }
 
 .lede {
-  font-size: 17px;
+  font-size: 16.5px;
   color: var(--ink-soft);
   max-width: 54ch;
   margin: 0;
@@ -154,7 +152,7 @@ a { color: inherit; }
 
 /* ---------------------------------- stepper ------------------------------ */
 
-.stepper { margin-bottom: 32px; }
+.stepper { margin-bottom: 28px; }
 
 #stepList {
   display: flex;
@@ -169,82 +167,114 @@ a { color: inherit; }
 
 .step {
   flex: 1;
-  padding: 14px 10px;
+  padding: 12px 6px;
   text-align: center;
   border-right: 1px dashed var(--line);
   color: var(--ink-soft);
   position: relative;
   transition: background-color .2s ease, color .2s ease;
+  min-width: 0;
 }
 .step:last-child { border-right: none; }
 
 .step-index {
   display: block;
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  margin-bottom: 3px;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  margin-bottom: 2px;
   opacity: .7;
 }
 
 .step-label {
   display: block;
-  font-size: 13px;
+  font-family: var(--font-display);
   font-weight: 600;
+  font-size: 13.5px;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .step.is-active {
-  background: var(--forest);
-  color: var(--cream);
+  background: var(--green);
+  color: var(--white);
 }
-.step.is-active .step-index { opacity: .85; color: var(--gold); }
+.step.is-active .step-index { opacity: .9; color: var(--green-light); }
 
 .step.is-complete {
   background: var(--cream-deep);
-  color: var(--forest-dark);
+  color: var(--green-deep);
 }
 .step.is-complete .step-label::after {
-  content: " ✓";
-  color: var(--rust);
+  content: " \2713";
+  color: var(--green-dark);
 }
 
-/* ---------------------------------- panels ------------------------------ */
+/* ---------------------------------- panels & transitions ----------------- */
 
-.panel { display: none; animation: fadeIn .25s ease; }
-.panel.is-active { display: block; }
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+.panel-frame {
+  position: relative;
+  overflow: hidden;
 }
 
-.panel-head { margin-bottom: 24px; }
+.panel {
+  display: none;
+}
+.panel.is-active {
+  display: block;
+}
+
+/* Soft crossfade + slide between steps. Direction is set via a class the
+   JS toggles ("dir-forward" / "dir-back") on the frame right before the
+   swap, so Continue glides one way and Back glides the other. */
+.panel.is-entering {
+  animation: panelEnter var(--step-duration) var(--ease-soft) both;
+}
+.panel.is-leaving {
+  animation: panelLeave var(--step-duration) var(--ease-soft) both;
+}
+
+@keyframes panelEnter {
+  from { opacity: 0; transform: translateX(var(--enter-from, 24px)); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes panelLeave {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(var(--leave-to, -24px)); }
+}
+
+.panel-frame.dir-back .panel.is-entering { --enter-from: -24px; }
+.panel-frame.dir-back .panel.is-leaving  { --leave-to: 24px; }
+
+.panel-head { margin-bottom: 22px; }
 
 .panel-head h2 {
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(22px, 3.4vw, 28px);
+  font-weight: 600;
+  font-size: clamp(21px, 4.4vw, 27px);
   margin: 0 0 8px;
-  color: var(--forest-dark);
+  color: var(--green-deep);
 }
 
 .panel-sub {
   margin: 0;
   color: var(--ink-soft);
-  font-size: 15px;
+  font-size: 14.5px;
   max-width: 60ch;
 }
 
 /* ---------------------------------- item groups ------------------------- */
 
-.item-category { margin-bottom: 26px; }
+.item-category { margin-bottom: 24px; }
 
 .item-category-title {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11.5px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--forest);
+  color: var(--green-dark);
   margin: 0 0 10px;
   padding-bottom: 6px;
   border-bottom: 1px dashed var(--line);
@@ -252,7 +282,7 @@ a { color: inherit; }
 
 .item-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 10px;
 }
 
@@ -268,28 +298,28 @@ a { color: inherit; }
   transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
 }
 
-.check-card:hover { border-color: var(--rust); }
+.check-card:hover { border-color: var(--green); }
 
 .check-card input[type="checkbox"] {
   margin-top: 3px;
-  width: 17px;
-  height: 17px;
-  accent-color: var(--rust);
+  width: 20px;
+  height: 20px;
+  accent-color: var(--green);
   flex-shrink: 0;
 }
 
 .check-card:has(input:checked) {
-  border-color: var(--forest);
+  border-color: var(--green);
   background: var(--cream-deep);
   box-shadow: var(--shadow-card);
 }
 
-.check-card-body { display: flex; flex-direction: column; gap: 3px; }
+.check-card-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 
 .check-card-sku {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--rust);
+  color: var(--green-dark);
   letter-spacing: .03em;
 }
 
@@ -306,12 +336,12 @@ a { color: inherit; }
 }
 
 .check-card--wide {
-  margin-bottom: 24px;
-  border-color: var(--gold);
+  margin-bottom: 22px;
+  border-color: var(--green-light);
 }
 .check-card--wide:has(input:checked) {
-  border-color: var(--rust);
-  background: #FBF0DF;
+  border-color: var(--green);
+  background: var(--cream-deep);
 }
 
 .field-inline { margin-bottom: 4px; }
@@ -335,7 +365,7 @@ a { color: inherit; }
 .qty-row-sku {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--rust);
+  color: var(--green-dark);
 }
 
 .qty-row-name { font-weight: 600; font-size: 14.5px; }
@@ -348,14 +378,14 @@ a { color: inherit; }
 
 .qty-row-error {
   font-size: 12px;
-  color: var(--rust-dark);
+  color: var(--red-dark);
   font-weight: 600;
   display: none;
 }
 
 .qty-row.has-error {
-  border-color: var(--rust);
-  background: #FBEEE8;
+  border-color: var(--red);
+  background: #FCEFEA;
 }
 .qty-row.has-error .qty-row-error { display: block; }
 
@@ -389,7 +419,7 @@ a { color: inherit; }
   color: var(--ink);
 }
 
-.req { color: var(--rust); }
+.req { color: var(--red); }
 
 input[type="text"],
 input[type="email"],
@@ -398,8 +428,8 @@ select,
 textarea {
   width: 100%;
   font-family: var(--font-body);
-  font-size: 15px;
-  padding: 10px 12px;
+  font-size: 16px; /* 16px avoids iOS Safari auto-zoom on focus */
+  padding: 11px 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: var(--white);
@@ -413,17 +443,17 @@ select:focus-visible,
 textarea:focus-visible,
 button:focus-visible,
 .check-card:has(input:focus-visible) {
-  outline: 2px solid var(--forest);
+  outline: 2px solid var(--green-dark);
   outline-offset: 2px;
 }
 
 .field-error {
   margin-top: 10px;
-  color: var(--rust-dark);
+  color: var(--red-dark);
   font-weight: 600;
   font-size: 14px;
-  background: #FBEEE8;
-  border: 1px solid var(--rust);
+  background: #FCEFEA;
+  border: 1px solid var(--red);
   border-radius: var(--radius-sm);
   padding: 10px 12px;
 }
@@ -440,21 +470,22 @@ button:focus-visible,
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  padding: 22px clamp(18px, 4vw, 28px);
+  padding: 20px clamp(16px, 4vw, 28px);
   font-family: var(--font-mono);
-  font-size: 13.5px;
+  font-size: 13px;
   box-shadow: var(--shadow-card);
   background-image: repeating-linear-gradient(
     to bottom, transparent, transparent 27px, var(--cream-deep) 28px
   );
+  overflow-x: auto;
 }
 
 .receipt h3 {
   font-family: var(--font-display);
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   margin: 0 0 10px;
-  color: var(--forest-dark);
+  color: var(--green-deep);
 }
 
 .receipt-section { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px dashed var(--line); }
@@ -466,7 +497,7 @@ button:focus-visible,
   gap: 12px;
   padding: 2px 0;
 }
-.receipt-line span:first-child { color: var(--ink-soft); }
+.receipt-line span:first-child { color: var(--ink-soft); flex-shrink: 0; }
 .receipt-line span:last-child { text-align: right; }
 
 .receipt-empty { color: var(--ink-soft); font-style: italic; }
@@ -474,22 +505,24 @@ button:focus-visible,
 /* ---------------------------------- buttons ------------------------------ */
 
 .btn {
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-weight: 600;
-  font-size: 15px;
-  padding: 12px 22px;
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  padding: 13px 24px;
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
   transition: transform .1s ease, background-color .15s ease, border-color .15s ease;
+  min-height: 44px; /* comfortable touch target */
 }
 .btn:active { transform: translateY(1px); }
 
 .btn-primary {
-  background: var(--forest);
-  color: var(--cream);
+  background: var(--green);
+  color: var(--white);
 }
-.btn-primary:hover { background: var(--forest-dark); }
+.btn-primary:hover { background: var(--green-dark); }
 
 .btn-ghost {
   background: transparent;
@@ -502,24 +535,27 @@ button:focus-visible,
 .form-nav {
   display: flex;
   justify-content: space-between;
-  margin-top: 32px;
+  gap: 12px;
+  margin-top: 28px;
   padding-top: 20px;
   border-top: 1px solid var(--line);
 }
 
-.submit-row { margin-top: 22px; }
+.submit-row { margin-top: 20px; }
+.submit-row .btn { width: 100%; }
 
 .success-state {
   margin-top: 20px;
   padding: 16px 18px;
   background: var(--cream-deep);
-  border: 1px solid var(--forest);
+  border: 1px solid var(--green);
   border-radius: var(--radius-sm);
 }
 .success-title {
   font-family: var(--font-display);
+  font-weight: 600;
   font-size: 17px;
-  color: var(--forest-dark);
+  color: var(--green-deep);
   margin: 0 0 6px;
 }
 .success-state p:last-child { margin: 0; color: var(--ink-soft); font-size: 14px; }
@@ -528,7 +564,7 @@ button:focus-visible,
 
 .site-footer {
   text-align: center;
-  padding: 24px;
+  padding: 22px 16px;
   font-size: 12.5px;
   color: var(--ink-soft);
   border-top: 1px solid var(--line);
@@ -536,10 +572,31 @@ button:focus-visible,
 
 /* ---------------------------------- responsive tweaks ---------------------- */
 
-@media (max-width: 560px) {
-  .step-label { font-size: 11.5px; }
-  .step-index { font-size: 10px; }
+@media (max-width: 640px) {
+  .site-header { padding: 12px 16px; }
+  .brand-logo { height: 34px; }
+  .header-link { display: none; } /* declutter the mobile header */
+
+  .step-label { font-size: 11px; }
+  .step-index { font-size: 9.5px; }
+  .step { padding: 10px 4px; }
+
   .qty-row { grid-template-columns: 1fr; }
-  .qty-row-select-wrap { align-items: flex-start; }
+  .qty-row-select-wrap { align-items: stretch; }
   .qty-row select { width: 100%; min-width: 0; }
+
+  .form-nav { flex-direction: column-reverse; }
+  .form-nav .btn { width: 100%; }
+
+  .receipt-line { flex-direction: column; gap: 1px; }
+  .receipt-line span:last-child { text-align: left; font-weight: 600; }
+}
+
+@media (max-width: 380px) {
+  .step-label {
+    font-size: 10px;
+    white-space: normal;   /* let long labels wrap to two lines instead of clipping */
+    line-height: 1.15;
+  }
+  .step { padding: 8px 3px; }
 }

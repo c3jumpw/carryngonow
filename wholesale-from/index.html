@@ -8,10 +8,10 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Narrow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="css/style.css">
-<link rel="icon" href="data:,">
+<link rel="icon" type="image/png" href="assets/logo.png">
 </head>
 <body>
 
@@ -19,8 +19,7 @@
 
 <header class="site-header">
   <a class="brand" href="https://carryngonow.com/">
-    <span class="brand-mark">CNG</span>
-    <span class="brand-name">Carry <em>n</em> Go</span>
+    <img class="brand-logo" src="assets/logo.png" alt="Carry n Go">
   </a>
   <a class="header-link" href="https://carryngonow.com/">carryngonow.com</a>
 </header>
@@ -59,10 +58,12 @@
 
   <form id="wholesaleForm" novalidate>
 
+  <div class="panel-frame" id="panelFrame">
+
     <!-- ============================================================
          PANEL 1 — ITEM SELECTION
     ============================================================= -->
-    <section class="panel is-active" id="panel-1" data-panel="1" aria-labelledby="panel-1-heading">
+    <section class="panel" id="panel-1" data-panel="1" aria-labelledby="panel-1-heading">
       <div class="panel-head">
         <h2 id="panel-1-heading">What are you looking to stock?</h2>
         <p class="panel-sub">Select every item you'd like a wholesale quote for. Not sure yet? Check "Bulk quote — not sure yet" and tell us more in the notes later.</p>
@@ -196,6 +197,8 @@
         <p>This demo doesn't have a live backend yet, so we've opened an email draft addressed to our wholesale team with everything filled in — just hit send from your email app. A copy of your answers is shown above for your records.</p>
       </div>
     </section>
+
+  </div><!-- /.panel-frame -->
 
     <!-- ============================================================
          NAVIGATION

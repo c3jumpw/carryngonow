@@ -27,6 +27,7 @@
   const els = {
     steps: document.querySelectorAll(".step"),
     panels: document.querySelectorAll(".panel"),
+    panelFrame: document.getElementById("panelFrame"),
     itemGroups: document.getElementById("itemGroups"),
     unsureBulk: document.getElementById("unsureBulk"),
     itemsError: document.getElementById("itemsError"),
@@ -298,12 +299,50 @@
    * STEP NAVIGATION
    * ------------------------------------------------------------ */
 
+  /**
+   * Soft, direction-aware transition between panels.
+   * The outgoing panel fades + slides out, then the incoming panel
+   * fades + slides in from the direction of travel (forward steps
+   * slide in from the right, "Back" slides in from the left).
+   * Respects prefers-reduced-motion via the global CSS override,
+   * which collapses these animations to ~0ms — the animationend
+   * listeners still fire normally either way, so no separate JS
+   * branch is needed for that.
+   */
   function goToStep(n) {
+    const prevStep = state.currentStep;
+    const goingForward = n >= prevStep;
     state.currentStep = n;
 
-    els.panels.forEach((panel) => {
-      panel.classList.toggle("is-active", Number(panel.dataset.panel) === n);
-    });
+    els.panelFrame.classList.toggle("dir-back", !goingForward);
+    els.panelFrame.classList.toggle("dir-forward", goingForward);
+
+    const outgoing = els.panelFrame.querySelector(".panel.is-active");
+    const incoming = els.panelFrame.querySelector(`.panel[data-panel="${n}"]`);
+
+    function showIncoming() {
+      if (outgoing && outgoing !== incoming) {
+        outgoing.classList.remove("is-active", "is-leaving");
+      }
+      if (n === 2) renderQuantityList();
+      if (n === 4) renderReceipt();
+
+      incoming.classList.add("is-active", "is-entering");
+      incoming.addEventListener(
+        "animationend",
+        () => incoming.classList.remove("is-entering"),
+        { once: true }
+      );
+
+      window.scrollTo({ top: document.querySelector(".stepper").offsetTop - 20, behavior: "smooth" });
+    }
+
+    if (outgoing && outgoing !== incoming) {
+      outgoing.classList.add("is-leaving");
+      outgoing.addEventListener("animationend", showIncoming, { once: true });
+    } else {
+      showIncoming();
+    }
 
     els.steps.forEach((step) => {
       const stepNum = Number(step.dataset.step);
@@ -313,14 +352,9 @@
 
     els.prevBtn.disabled = n === 1;
 
-    if (n === 2) renderQuantityList();
-    if (n === 4) renderReceipt();
-
     // Swap the nav button on the final step for the real submit button.
     els.nextBtn.hidden = n === state.totalSteps;
     els.submitBtn.parentElement.style.display = n === state.totalSteps ? "" : "none";
-
-    window.scrollTo({ top: document.querySelector(".stepper").offsetTop - 20, behavior: "smooth" });
   }
 
   els.nextBtn.addEventListener("click", () => {
