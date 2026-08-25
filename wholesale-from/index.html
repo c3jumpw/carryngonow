@@ -1,1 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wholesale Inquiry — Carry n Go</title>
+<meta name="description" content="Request wholesale pricing and bulk availability from Carry n Go — natural West African &amp; Caribbean groceries.">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+
+<div class="tape" aria-hidden="true"></div>
+
+<header class="site-header">
+  <a class="brand" href="https://carryngonow.com/">
+    <span class="brand-mark">CNG</span>
+    <span class="brand-name">Carry <em>n</em> Go</span>
+  </a>
+  <a class="header-link" href="https://carryngonow.com/">carryngonow.com</a>
+</header>
+
+<main class="wrap">
+
+  <section class="intro">
+    <p class="eyebrow">Wholesale &amp; Bulk Ordering</p>
+    <h1>Stock your shelves with the flavors of home.</h1>
+    <p class="lede">Tell us what you need and how much. Our team will follow up with wholesale pricing, availability, and delivery details — no account required.</p>
+  </section>
+
+  <!-- ============================================================
+       STEP INDICATOR
+  ============================================================= -->
+  <nav class="stepper" aria-label="Form progress">
+    <ol id="stepList">
+      <li class="step is-active" data-step="1">
+        <span class="step-index">01</span>
+        <span class="step-label">Items</span>
+      </li>
+      <li class="step" data-step="2">
+        <span class="step-index">02</span>
+        <span class="step-label">Quantities</span>
+      </li>
+      <li class="step" data-step="3">
+        <span class="step-index">03</span>
+        <span class="step-label">Your details</span>
+      </li>
+      <li class="step" data-step="4">
+        <span class="step-index">04</span>
+        <span class="step-label">Review &amp; send</span>
+      </li>
+    </ol>
+  </nav>
+
+  <form id="wholesaleForm" novalidate>
+
+    <!-- ============================================================
+         PANEL 1 — ITEM SELECTION
+    ============================================================= -->
+    <section class="panel is-active" id="panel-1" data-panel="1" aria-labelledby="panel-1-heading">
+      <div class="panel-head">
+        <h2 id="panel-1-heading">What are you looking to stock?</h2>
+        <p class="panel-sub">Select every item you'd like a wholesale quote for. Not sure yet? Check "Bulk quote — not sure yet" and tell us more in the notes later.</p>
+      </div>
+
+      <div class="field-inline">
+        <label class="check-card check-card--wide">
+          <input type="checkbox" id="unsureBulk" name="unsureBulk">
+          <span class="check-card-body">
+            <span class="check-card-title">I'm not sure yet — send me a general bulk quote</span>
+            <span class="check-card-desc">Skip item selection and go straight to sharing your business details and notes.</span>
+          </span>
+        </label>
+      </div>
+
+      <div id="itemGroups"><!-- populated by script.js from INVENTORY --></div>
+
+      <p class="field-error" id="itemsError" role="alert" hidden>Select at least one item, or check "not sure yet" above.</p>
+    </section>
+
+    <!-- ============================================================
+         PANEL 2 — QUANTITIES
+    ============================================================= -->
+    <section class="panel" id="panel-2" data-panel="2" aria-labelledby="panel-2-heading">
+      <div class="panel-head">
+        <h2 id="panel-2-heading">How much of each?</h2>
+        <p class="panel-sub">Give us a range for each item — exact counts aren't needed yet. Our wholesale minimum is <strong>12 units per item</strong>.</p>
+      </div>
+
+      <div id="quantityList"><!-- populated by script.js --></div>
+
+      <p class="field-note" id="quantitySkippedNote" hidden>You checked "not sure yet," so quantities are skipped — you can describe volume in the notes on the next step.</p>
+    </section>
+
+    <!-- ============================================================
+         PANEL 3 — BUSINESS / CONTACT DETAILS
+    ============================================================= -->
+    <section class="panel" id="panel-3" data-panel="3" aria-labelledby="panel-3-heading">
+      <div class="panel-head">
+        <h2 id="panel-3-heading">Tell us about your business</h2>
+        <p class="panel-sub">So we can route pricing and delivery details to the right place.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="contactName">Full name <span class="req">*</span></label>
+          <input type="text" id="contactName" name="contactName" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="businessName">Business / organization name <span class="req">*</span></label>
+          <input type="text" id="businessName" name="businessName" autocomplete="organization" required>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="email">Email <span class="req">*</span></label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="(optional)">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="businessType">Business type <span class="req">*</span></label>
+        <select id="businessType" name="businessType" required>
+          <option value="">Select one…</option>
+          <option value="restaurant">Restaurant / caterer</option>
+          <option value="grocery">Grocery store / market</option>
+          <option value="online-reseller">Online reseller</option>
+          <option value="church-org">Church / community organization</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="deliveryAddress">Delivery / pickup location <span class="req">*</span></label>
+        <input type="text" id="deliveryAddress" name="deliveryAddress" autocomplete="street-address" placeholder="Street address, city, state">
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="fulfillment">Preferred fulfillment</label>
+          <select id="fulfillment" name="fulfillment">
+            <option value="delivery">Delivery</option>
+            <option value="pickup">Local pickup</option>
+            <option value="either">Either works</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="timeline">When do you need this by?</label>
+          <select id="timeline" name="timeline">
+            <option value="asap">As soon as possible</option>
+            <option value="2weeks">Within 2 weeks</option>
+            <option value="month">Within a month</option>
+            <option value="ongoing">Setting up ongoing supply</option>
+            <option value="just-pricing">Just checking pricing for now</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="notes">Anything else we should know?</label>
+        <textarea id="notes" name="notes" rows="4" placeholder="Substitutions you'd accept, recurring order cadence, resale certificate on file, etc."></textarea>
+      </div>
+
+      <p class="field-error" id="contactError" role="alert" hidden>Please fill in the required fields above before continuing.</p>
+    </section>
+
+    <!-- ============================================================
+         PANEL 4 — REVIEW & SEND
+    ============================================================= -->
+    <section class="panel" id="panel-4" data-panel="4" aria-labelledby="panel-4-heading">
+      <div class="panel-head">
+        <h2 id="panel-4-heading">Review your inquiry</h2>
+        <p class="panel-sub">Double check everything below, then send it our way.</p>
+      </div>
+
+      <div class="receipt" id="receipt" aria-live="polite">
+        <!-- populated by script.js -->
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="btn btn-primary" id="submitBtn">Send wholesale inquiry</button>
+      </div>
+
+      <div class="success-state" id="successState" hidden>
+        <p class="success-title">Inquiry ready to send ✓</p>
+        <p>This demo doesn't have a live backend yet, so we've opened an email draft addressed to our wholesale team with everything filled in — just hit send from your email app. A copy of your answers is shown above for your records.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         NAVIGATION
+    ============================================================= -->
+    <div class="form-nav">
+      <button type="button" class="btn btn-ghost" id="prevBtn" disabled>Back</button>
+      <button type="button" class="btn btn-primary" id="nextBtn">Continue</button>
+    </div>
+
+  </form>
+
+</main>
+
+<footer class="site-footer">
+  <p>Carry n Go Wholesale — demo build. Not affiliated with checkout on carryngonow.com.</p>
+</footer>
+
+<script src="js/inventory-data.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

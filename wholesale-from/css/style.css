@@ -1,0 +1,545 @@
+/* ==========================================================================
+   CARRY N GO — WHOLESALE INQUIRY
+   Design concept: a "packing ledger." Carry n Go's whole promise is getting
+   familiar ingredients to your door — so the form borrows the vocabulary of
+   shipping labels, market receipts, and packing lists: a torn paper-tape
+   header, ledger-style step tabs, monospaced SKU tags, and a running
+   "receipt" that tallies what's been picked. Palette is pulled from the
+   goods themselves — palm oil red, garri cream, bean brown, leaf green —
+   rather than a generic food-site look.
+   ========================================================================== */
+
+:root {
+  --cream:        #FAF6EC;
+  --cream-deep:   #F2ECDC;
+  --forest:       #1F4D3A;
+  --forest-dark:  #14332A;
+  --rust:         #BE4A28;
+  --rust-dark:    #A03E20;
+  --gold:         #D6A13C;
+  --ink:          #2B2118;
+  --ink-soft:     #5B5142;
+  --line:         #D9CFB8;
+  --white:        #FFFFFF;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body:    'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --shadow-card: 0 1px 2px rgba(43, 33, 24, 0.06), 0 6px 16px rgba(43, 33, 24, 0.05);
+}
+
+* { box-sizing: border-box; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Torn-tape accent strip along the very top of the page */
+.tape {
+  height: 10px;
+  width: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--rust) 0px, var(--rust) 10px,
+    var(--gold) 10px, var(--gold) 20px
+  );
+}
+
+a { color: inherit; }
+
+/* ---------------------------------- header ---------------------------- */
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px clamp(20px, 5vw, 64px);
+  border-bottom: 1px solid var(--line);
+  background: var(--cream);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--cream);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+}
+.brand-name em { color: var(--rust); font-style: normal; }
+
+.header-link {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--ink-soft);
+}
+.header-link:hover { color: var(--rust); border-color: var(--rust); }
+
+/* ---------------------------------- layout ------------------------------ */
+
+.wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: clamp(32px, 6vw, 56px) clamp(20px, 5vw, 24px) 96px;
+}
+
+.intro { margin-bottom: 40px; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin: 0 0 10px;
+}
+
+.intro h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(30px, 5vw, 42px);
+  line-height: 1.12;
+  margin: 0 0 14px;
+  color: var(--forest-dark);
+}
+
+.lede {
+  font-size: 17px;
+  color: var(--ink-soft);
+  max-width: 54ch;
+  margin: 0;
+}
+
+/* ---------------------------------- stepper ------------------------------ */
+
+.stepper { margin-bottom: 32px; }
+
+#stepList {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  overflow: hidden;
+}
+
+.step {
+  flex: 1;
+  padding: 14px 10px;
+  text-align: center;
+  border-right: 1px dashed var(--line);
+  color: var(--ink-soft);
+  position: relative;
+  transition: background-color .2s ease, color .2s ease;
+}
+.step:last-child { border-right: none; }
+
+.step-index {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  margin-bottom: 3px;
+  opacity: .7;
+}
+
+.step-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.step.is-active {
+  background: var(--forest);
+  color: var(--cream);
+}
+.step.is-active .step-index { opacity: .85; color: var(--gold); }
+
+.step.is-complete {
+  background: var(--cream-deep);
+  color: var(--forest-dark);
+}
+.step.is-complete .step-label::after {
+  content: " ✓";
+  color: var(--rust);
+}
+
+/* ---------------------------------- panels ------------------------------ */
+
+.panel { display: none; animation: fadeIn .25s ease; }
+.panel.is-active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.panel-head { margin-bottom: 24px; }
+
+.panel-head h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(22px, 3.4vw, 28px);
+  margin: 0 0 8px;
+  color: var(--forest-dark);
+}
+
+.panel-sub {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+  max-width: 60ch;
+}
+
+/* ---------------------------------- item groups ------------------------- */
+
+.item-category { margin-bottom: 26px; }
+
+.item-category-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--forest);
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.check-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+
+.check-card:hover { border-color: var(--rust); }
+
+.check-card input[type="checkbox"] {
+  margin-top: 3px;
+  width: 17px;
+  height: 17px;
+  accent-color: var(--rust);
+  flex-shrink: 0;
+}
+
+.check-card:has(input:checked) {
+  border-color: var(--forest);
+  background: var(--cream-deep);
+  box-shadow: var(--shadow-card);
+}
+
+.check-card-body { display: flex; flex-direction: column; gap: 3px; }
+
+.check-card-sku {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--rust);
+  letter-spacing: .03em;
+}
+
+.check-card-title {
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--ink);
+}
+
+.check-card-desc {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.check-card--wide {
+  margin-bottom: 24px;
+  border-color: var(--gold);
+}
+.check-card--wide:has(input:checked) {
+  border-color: var(--rust);
+  background: #FBF0DF;
+}
+
+.field-inline { margin-bottom: 4px; }
+
+/* ---------------------------------- quantities --------------------------- */
+
+.qty-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 14px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+
+.qty-row-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.qty-row-sku {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--rust);
+}
+
+.qty-row-name { font-weight: 600; font-size: 14.5px; }
+
+.qty-row-select-wrap { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+
+.qty-row select {
+  min-width: 190px;
+}
+
+.qty-row-error {
+  font-size: 12px;
+  color: var(--rust-dark);
+  font-weight: 600;
+  display: none;
+}
+
+.qty-row.has-error {
+  border-color: var(--rust);
+  background: #FBEEE8;
+}
+.qty-row.has-error .qty-row-error { display: block; }
+
+.empty-note {
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ---------------------------------- form fields --------------------------- */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 560px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+.field { margin-bottom: 18px; }
+
+.field label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+
+.req { color: var(--rust); }
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  color: var(--ink);
+}
+
+textarea { resize: vertical; min-height: 90px; }
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible,
+.check-card:has(input:focus-visible) {
+  outline: 2px solid var(--forest);
+  outline-offset: 2px;
+}
+
+.field-error {
+  margin-top: 10px;
+  color: var(--rust-dark);
+  font-weight: 600;
+  font-size: 14px;
+  background: #FBEEE8;
+  border: 1px solid var(--rust);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+
+.field-note {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* ---------------------------------- receipt / review --------------------- */
+
+.receipt {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 22px clamp(18px, 4vw, 28px);
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  box-shadow: var(--shadow-card);
+  background-image: repeating-linear-gradient(
+    to bottom, transparent, transparent 27px, var(--cream-deep) 28px
+  );
+}
+
+.receipt h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 10px;
+  color: var(--forest-dark);
+}
+
+.receipt-section { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px dashed var(--line); }
+.receipt-section:last-child { border-bottom: none; margin-bottom: 0; }
+
+.receipt-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 0;
+}
+.receipt-line span:first-child { color: var(--ink-soft); }
+.receipt-line span:last-child { text-align: right; }
+
+.receipt-empty { color: var(--ink-soft); font-style: italic; }
+
+/* ---------------------------------- buttons ------------------------------ */
+
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 22px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform .1s ease, background-color .15s ease, border-color .15s ease;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: var(--forest);
+  color: var(--cream);
+}
+.btn-primary:hover { background: var(--forest-dark); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-soft);
+  border-color: var(--line);
+}
+.btn-ghost:hover { border-color: var(--ink-soft); color: var(--ink); }
+.btn-ghost:disabled { opacity: .4; cursor: not-allowed; }
+
+.form-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.submit-row { margin-top: 22px; }
+
+.success-state {
+  margin-top: 20px;
+  padding: 16px 18px;
+  background: var(--cream-deep);
+  border: 1px solid var(--forest);
+  border-radius: var(--radius-sm);
+}
+.success-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--forest-dark);
+  margin: 0 0 6px;
+}
+.success-state p:last-child { margin: 0; color: var(--ink-soft); font-size: 14px; }
+
+/* ---------------------------------- footer -------------------------------- */
+
+.site-footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--line);
+}
+
+/* ---------------------------------- responsive tweaks ---------------------- */
+
+@media (max-width: 560px) {
+  .step-label { font-size: 11.5px; }
+  .step-index { font-size: 10px; }
+  .qty-row { grid-template-columns: 1fr; }
+  .qty-row-select-wrap { align-items: flex-start; }
+  .qty-row select { width: 100%; min-width: 0; }
+}
